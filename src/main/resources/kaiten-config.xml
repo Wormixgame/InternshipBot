@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <board-config>
+        <!-- Доска стажёров -->
+        <board-info>
+            <board-name>intern</board-name>
+            <board-id>919510</board-id>
+            <card-type-id>350838</card-type-id>
+            <candidate-column-id>3260000</candidate-column-id>
+            <unspecified-lane-id>1149001</unspecified-lane-id>
+        </board-info>
+        <board-lanes>
+            <board-lane>
+                <!-- Тестировщики -->
+                <id>1147253</id>
+                <site-value>Тестирование ПО</site-value>
+            </board-lane>
+            <board-lane>
+                <!-- Системные аналитики -->
+                <id>1147256</id>
+                <site-value>Системная аналатика</site-value>
+            </board-lane>
+            <board-lane>
+                <!-- Бэкендеры (Java) -->
+                <id>1147257</id>
+                <site-value>Бэкенд (Java)</site-value>
+            </board-lane>
+            <board-lane>
+                <!-- Фронтендеры -->
+                <id>1147262</id>
+                <site-value>Фронтенд</site-value>
+            </board-lane>
+            <board-lane>
+                <!-- Бэкендеры (Go) -->
+                <id>1147258</id>
+                <site-value>Бэкенд (GoLang)</site-value>
+            </board-lane>
+        </board-lanes>
+        <board-custom-properties>
+            <board-custom-property>
+                <!-- Дата рождения -->
+                <id>343637</id>
+                <database-name>dateOfBirth</database-name>
+            </board-custom-property>
+            <board-custom-property>
+                <!-- Образовательное учреждение -->
+                <id>343641</id>
+                <database-name>institution</database-name>
+            </board-custom-property>
+            <board-custom-property>
+                <!-- Телефон -->
+                <id>343646</id>
+                <database-name>phoneNumber</database-name>
+            </board-custom-property>
+            <board-custom-property>
+                <!-- Телеграм -->
+                <id>343647</id>
+                <database-name>tgUrl</database-name>
+            </board-custom-property>
+        </board-custom-properties>
+        <board-service-properties>
+            <board-service-property>
+                <!-- Дата начала стажировки -->
+                <id>344502</id>
+                <name>dateOfStartInternShipId</name>
+            </board-service-property>
+
+            <board-service-property>
+                <!-- Дата последнего собеседования -->
+                <id>344503</id>
+                <name>dateOfLastInterviewId</name>
+            </board-service-property>
+        </board-service-properties>
+    </board-config>
+
+    <board-config>
+        <!-- Доска практикантов -->
+        <board-info>
+            <board-name>practice</board-name>
+            <board-id>927540</board-id>
+            <card-type-id>355224</card-type-id>
+            <candidate-column-id>3288126</candidate-column-id>
+            <unspecified-lane-id>1157819</unspecified-lane-id>
+        </board-info>
+
+        <board-lanes>
+            <board-lane>
+                <!-- Тестировщики -->
+                <id>1148716</id>
+                <site-value>Тестирование ПО</site-value>
+            </board-lane>
+            <board-lane>
+                <!-- Системные аналитики -->
+                <id>1148717</id>
+                <site-value>Системная аналатика</site-value>
+            </board-lane>
+            <board-lane>
+                <!-- Бэкендеры (Java) -->
+                <id>1148718</id>
+                <site-value>Бэкенд (Java)</site-value>
+            </board-lane>
+            <board-lane>
+                <!-- Фронтендеры -->
+                <id>1148720</id>
+                <site-value>Фронтенд</site-value>
+            </board-lane>
+            <board-lane>
+                <!-- Бэкендеры (Go) -->
+                <id>1148719</id>
+                <site-value>Бэкенд (GoLang)</site-value>
+            </board-lane>
+        </board-lanes>
+
+        <board-custom-properties>
+            <board-custom-property>
+                <!-- Дата рождения -->
+                <id>343637</id>
+                <database-name>dateOfBirth</database-name>
+            </board-custom-property>
+            <board-custom-property>
+                <!-- Образовательное учреждение -->
+                <id>343641</id>
+                <database-name>institution</database-name>
+            </board-custom-property>
+            <board-custom-property>
+                <!-- Телефон -->
+                <id>343646</id>
+                <database-name>phoneNumber</database-name>
+            </board-custom-property>
+            <board-custom-property>
+                <!-- Телеграм -->
+                <id>343647</id>
+                <database-name>tgUrl</database-name>
+            </board-custom-property>
+            <board-custom-property>
+                <!-- Дата начала практики -->
+                <id>345969</id>
+                <database-name>dateOfStartPractice</database-name>
+            </board-custom-property>
+        </board-custom-properties>
+
+        <board-service-properties>
+            <board-service-property>
+                <!-- Колонка принятых практикантов -->
+                <id>3288127</id>
+                <name>acceptedColumnId</name>
+            </board-service-property>
+        </board-service-properties>
+    </board-config>
+
+    <custom-properties>
+        <custom-property>
+            <!-- Дата рождения -->
+            <id>343637</id>
+            <type>date</type>
+        </custom-property>
+        <custom-property>
+            <!-- Образовательное учреждение -->
+            <id>343641</id>
+            <type>select</type>
+        </custom-property>
+        <custom-property>
+            <!-- Телефон -->
+            <id>343646</id>
+            <type>phone</type>
+        </custom-property>
+        <custom-property>
+            <!-- Телеграм -->
+            <id>343647</id>
+            <type>link</type>
+        </custom-property>
+        <custom-property>
+            <!-- Дата начала практики -->
+            <id>345969</id>
+            <type>date</type>
+        </custom-property>
+    </custom-properties>
+
+    <select-custom-properties-config>
+        <select-custom-property-config>
+            <!-- Образовательное учреждение -->
+            <id>343641</id>
+            <allow-creation>true</allow-creation>
+        </select-custom-property-config>
+    </select-custom-properties-config>
+</config>
+
