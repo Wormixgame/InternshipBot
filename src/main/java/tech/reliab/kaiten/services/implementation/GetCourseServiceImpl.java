@@ -1,13 +1,9 @@
 package tech.reliab.kaiten.services.implementation;
 
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.servlet.View;
 import reactor.core.publisher.Mono;
 import tech.reliab.kaiten.Entity.Entity;
 import tech.reliab.kaiten.Entity.InternshipEntity;
@@ -17,7 +13,6 @@ import tech.reliab.kaiten.services.GetCourseService;
 @RequiredArgsConstructor
 public class GetCourseServiceImpl implements GetCourseService {
     private final WebClient getCourseApiClient;
-    private final View error;
 
     @Value("${tech.reliab.getCourse.templateUrl}")
     private String getCourseTemplateUrl;
