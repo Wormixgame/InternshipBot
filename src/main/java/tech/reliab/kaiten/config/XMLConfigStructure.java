@@ -12,9 +12,7 @@ import java.util.List;
 public class XMLConfigStructure {
     @XmlElement(name = "board-config")
     private List<XMLBoardConfig> boardConfigs;
-    @XmlElementWrapper(name = "custom-properties")
-    @XmlElement(name = "custom-property")
-    private List<XMLCustomProperty> customProperties;
+
     @XmlElementWrapper(name = "select-custom-properties-config")
     @XmlElement(name = "select-custom-property-config")
     private List<XMLSelectCustomPropertyConfig> selectCustomPropertiesConfig;
@@ -51,8 +49,6 @@ public class XMLConfigStructure {
         private int cardTypeId;
         @XmlElement(name = "candidate-column-id")
         private int candidateColumnId;
-        @XmlElement(name = "unspecified-lane-id")
-        private int unspecifiedLaneId;
     }
 
 
@@ -69,15 +65,9 @@ public class XMLConfigStructure {
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class XMLBoardCustomProperty {
         private int id;
+        private String type;
         @XmlElement(name = "database-name")
         private String databaseName;
-    }
-
-    @Data
-    @XmlAccessorType(XmlAccessType.FIELD)
-    public static class XMLCustomProperty {
-        private int id;
-        private String type;
     }
 
     @Data

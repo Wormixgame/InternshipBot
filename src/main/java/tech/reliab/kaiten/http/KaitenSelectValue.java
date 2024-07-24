@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class KaitenSelectValuesResponseBody {
+public class KaitenSelectValue {
     private Integer id;
     private String value;
 }

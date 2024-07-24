@@ -1,4 +1,4 @@
-package tech.reliab.kaiten.kaiten;
+package tech.reliab.kaiten.config;
 
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Unmarshaller;
@@ -11,8 +11,12 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.reactive.function.client.WebClient;
-import tech.reliab.kaiten.config.KaitenConfig;
-import tech.reliab.kaiten.config.XMLConfigStructure;
+import tech.reliab.kaiten.Entity.Entity;
+import tech.reliab.kaiten.Entity.InternshipEntity;
+import tech.reliab.kaiten.Entity.PracticeEntity;
+import tech.reliab.kaiten.kaiten.KaitenTask;
+
+import java.util.Map;
 
 
 @Slf4j
@@ -32,13 +36,24 @@ public class KaitenContextConfiguration {
     @Value("${tech.reliab.getCourse.baseUrl}")
     private String getCourseMicroserviceBaseUrl;
 
+    @Value("${tech.reliab.db.practice.url}")
+    private String practiceEntitiesUrl;
+
+    @Value("${tech.reliab.db.intern.url}")
+    private String internEntitiesUrl;
+
+    @Bean
+    @Scope("singleton")
+    public Map<Class<? extends Entity>, String> dbUrls() {
+        return Map.of(InternshipEntity.class, internEntitiesUrl, PracticeEntity.class, practiceEntitiesUrl);
+    }
 
     @Autowired
     private ResourceLoader resourceLoader;
 
     @Bean
     @Scope("singleton")
-    public RestClient KAITEN_SERVICE() {
+    public RestClient kaitenApiClient() {
         return
                 RestClient
                         .builder()
@@ -50,7 +65,7 @@ public class KaitenContextConfiguration {
 
     @Bean
     @Scope("singleton")
-    public WebClient DB_SERVICE(){
+    public WebClient dbApiClient(){
         return
                 WebClient
                         .builder()
@@ -60,9 +75,10 @@ public class KaitenContextConfiguration {
                         .build();
     }
 
+
     @Bean
     @Scope("singleton")
-    public WebClient GET_COURSE_SERVICE(){
+    public WebClient getCourseApiClient(){
         return
                 WebClient
                         .builder()
@@ -84,4 +100,9 @@ public class KaitenContextConfiguration {
         }
     }
 
+    @Bean
+    @Scope("singleton")
+    public Map<Class<? extends Entity>, KaitenConfig.BoardInfo> boardInfos(){
+        return Map.of(InternshipEntity.class,KAITEN_CONFIG().boardInfos.get("intern"),PracticeEntity.class ,KAITEN_CONFIG().boardInfos.get("practice"));
+    }
 }

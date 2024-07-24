@@ -1,43 +1,46 @@
 package tech.reliab.kaiten.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
 public abstract class Entity {
-    protected Long id;
+    protected Long id = null;
 
-    protected String fullName;
+    protected String fullName = ".";
 
-    protected Date dateOfBirth;
+    protected Date dateOfBirth = new Date();
 
-    protected String email;
-    protected String cityLocation;
-    protected String institution;
+    protected String email = ".";
+    protected String cityLocation = ".";
+    protected String institution = ".";
 
-    protected Date dateOfGraduation;
+    protected Integer yearOfGraduation = 0;
 
-    protected String internshipDirection;
-    protected String phoneNumber;
-    protected String tgUrl;
-    protected String studyDegree;
-    protected String specialization;
-    protected String infoAboutHowFindInternship;
-    protected String infoAboutWorkExperience;
-    protected String infoAboutOpinionOfInternship;
-    protected String infoAboutIntern;
+    protected String internshipDirection = ".";
+    protected String phoneNumber = ".";
+    protected String tgUrl = ".";
+    protected String studyDegree = ".";
+    protected String specialization = ".";
+    protected String infoAboutHowFindInternship = ".";
+    protected String infoAboutWorkExperience = ".";
+    protected String infoAboutOpinionOfInternship = ".";
+    protected String infoAboutIntern = ".";
 
-    protected Integer idCardKaiten;
-    protected Long idGetCourse;
+    protected Integer idCardKaiten = null;
+    protected Long idGetCourse = 0L;
 
+    @JsonIgnore
     public String getTitle(){
         return fullName;
     }
+    @JsonIgnore
     public String getDirection(){
         return internshipDirection;
     }
-
+    @JsonIgnore
     public String getDescription(){
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -59,4 +62,6 @@ public abstract class Entity {
 
         return stringBuilder.toString();
     }
+    @JsonIgnore
+    public abstract String getEntityName();
 }

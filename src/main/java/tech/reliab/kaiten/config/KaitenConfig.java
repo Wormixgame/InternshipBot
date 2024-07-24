@@ -16,16 +16,11 @@ public class KaitenConfig {
         public final Integer boardId;
         public final Integer cardTypeId;
         public final Integer candidatesColumnId;
-        public final Integer unspecifiedDirectionLaneId;
         public final HashMap<String, Integer> lanes;
         public final HashMap<String, CustomProperty> customProperties;
         public final HashMap<String, Integer> serviceProperties;
     }
     public KaitenConfig(XMLConfigStructure configStructure){
-        HashMap<Integer, CustomProperty> globalCustomProperties = new HashMap<>();
-        for (XMLConfigStructure.XMLCustomProperty customProperty: configStructure.getCustomProperties()){
-            globalCustomProperties.put(customProperty.getId(), new CustomProperty(customProperty.getId(), customProperty.getType()));
-        }
         selectPropertiesConfig = new HashMap<>();
         for (XMLConfigStructure.XMLSelectCustomPropertyConfig selectCustomPropertyConfig :configStructure.getSelectCustomPropertiesConfig()){
             selectPropertiesConfig.put(selectCustomPropertyConfig.getId(), new SelectProperty(selectCustomPropertyConfig.isAllowCreation()));
@@ -42,7 +37,7 @@ public class KaitenConfig {
             }
 
             for (XMLConfigStructure.XMLBoardCustomProperty boardCustomProperty :boardConfig.getBoardCustomProperties()){
-                customProperties.put(boardCustomProperty.getDatabaseName(), globalCustomProperties.get(boardCustomProperty.getId()));
+                customProperties.put(boardCustomProperty.getDatabaseName(), new CustomProperty(boardCustomProperty.getId(), boardCustomProperty.getType()));
             }
 
             for (XMLConfigStructure.XMLBoardServiceProperty boardServiceProperty :boardConfig.getBoardServiceProperties()){
@@ -56,14 +51,12 @@ public class KaitenConfig {
                             xmlBoardInfo.getBoardId(),
                             xmlBoardInfo.getCardTypeId(),
                             xmlBoardInfo.getCandidateColumnId(),
-                            xmlBoardInfo.getUnspecifiedLaneId(),
                             lanes,
                             customProperties,
                             serviceProperties
                     )
             );
         }
-        globalCustomProperties.clear();
     }
 
     @Data

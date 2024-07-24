@@ -1,6 +1,7 @@
 package tech.reliab.kaiten.Entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import java.util.Date;
 
@@ -9,12 +10,16 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class InternshipEntity extends Entity{
-    private Date dateOfStartInternship;
+    private Date dateOfStartInternship = null;
+    private Date dateOfLastInterview = null;
 
-    private Integer stageOfInternship;
-    private Date dateOfLastInterview;
+    private Long chatId = null;
+    private Boolean isNotified = false;
 
-    private Long chatId;
-    private Boolean isNotified;
+    @Override
+    public String getEntityName() {
+        return "Стажёр";
+    }
 }

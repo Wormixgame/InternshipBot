@@ -1,5 +1,6 @@
 package tech.reliab.kaiten.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import java.util.Date;
@@ -9,6 +10,12 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PracticeEntity extends Entity{
-    private Date dateOfStartPractice;
+    private Date dateOfStartPractice = new Date();
+
+    @Override
+    public String getEntityName() {
+        return "Практикант";
+    }
 }

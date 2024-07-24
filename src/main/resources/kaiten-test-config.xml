@@ -7,7 +7,6 @@
             <board-id>919510</board-id>
             <card-type-id>350838</card-type-id>
             <candidate-column-id>3260000</candidate-column-id>
-            <unspecified-lane-id>1149001</unspecified-lane-id>
         </board-info>
         <board-lanes>
             <board-lane>
@@ -40,21 +39,25 @@
             <board-custom-property>
                 <!-- Дата рождения -->
                 <id>343637</id>
+                <type>date</type>
                 <database-name>dateOfBirth</database-name>
             </board-custom-property>
             <board-custom-property>
                 <!-- Образовательное учреждение -->
                 <id>343641</id>
+                <type>select</type>
                 <database-name>institution</database-name>
             </board-custom-property>
             <board-custom-property>
                 <!-- Телефон -->
                 <id>343646</id>
+                <type>phone</type>
                 <database-name>phoneNumber</database-name>
             </board-custom-property>
             <board-custom-property>
                 <!-- Телеграм -->
                 <id>343647</id>
+                <type>link</type>
                 <database-name>tgUrl</database-name>
             </board-custom-property>
         </board-custom-properties>
@@ -78,9 +81,8 @@
         <board-info>
             <board-name>practice</board-name>
             <board-id>927540</board-id>
-            <card-type-id>355224</card-type-id>
+            <card-type-id>350838</card-type-id>
             <candidate-column-id>3288126</candidate-column-id>
-            <unspecified-lane-id>1157819</unspecified-lane-id>
         </board-info>
 
         <board-lanes>
@@ -115,26 +117,31 @@
             <board-custom-property>
                 <!-- Дата рождения -->
                 <id>343637</id>
+                <type>date</type>
                 <database-name>dateOfBirth</database-name>
             </board-custom-property>
             <board-custom-property>
                 <!-- Образовательное учреждение -->
                 <id>343641</id>
+                <type>select</type>
                 <database-name>institution</database-name>
             </board-custom-property>
             <board-custom-property>
                 <!-- Телефон -->
                 <id>343646</id>
+                <type>phone</type>
                 <database-name>phoneNumber</database-name>
             </board-custom-property>
             <board-custom-property>
                 <!-- Телеграм -->
                 <id>343647</id>
+                <type>link</type>
                 <database-name>tgUrl</database-name>
             </board-custom-property>
             <board-custom-property>
                 <!-- Дата начала практики -->
                 <id>345969</id>
+                <type>date</type>
                 <database-name>dateOfStartPractice</database-name>
             </board-custom-property>
         </board-custom-properties>
@@ -147,34 +154,6 @@
             </board-service-property>
         </board-service-properties>
     </board-config>
-
-    <custom-properties>
-        <custom-property>
-            <!-- Дата рождения -->
-            <id>343637</id>
-            <type>date</type>
-        </custom-property>
-        <custom-property>
-            <!-- Образовательное учреждение -->
-            <id>343641</id>
-            <type>select</type>
-        </custom-property>
-        <custom-property>
-            <!-- Телефон -->
-            <id>343646</id>
-            <type>phone</type>
-        </custom-property>
-        <custom-property>
-            <!-- Телеграм -->
-            <id>343647</id>
-            <type>link</type>
-        </custom-property>
-        <custom-property>
-            <!-- Дата начала практики -->
-            <id>345969</id>
-            <type>date</type>
-        </custom-property>
-    </custom-properties>
 
     <select-custom-properties-config>
         <select-custom-property-config>

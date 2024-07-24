@@ -98,8 +98,8 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
-    </dependencies>
 
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
