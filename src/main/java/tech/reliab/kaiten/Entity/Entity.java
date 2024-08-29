@@ -9,25 +9,25 @@ import java.util.Date;
 public abstract class Entity {
     protected Long id = null;
 
-    protected String fullName = ".";
+    protected String fullName = "-";
 
     protected Date dateOfBirth = new Date();
 
-    protected String email = ".";
-    protected String cityLocation = ".";
-    protected String institution = ".";
+    protected String email = "example@example.com";
+    protected String cityLocation = "-";
+    protected String institution = "-";
 
     protected Integer yearOfGraduation = 0;
 
-    protected String internshipDirection = ".";
-    protected String phoneNumber = ".";
-    protected String tgUrl = ".";
-    protected String studyDegree = ".";
-    protected String specialization = ".";
-    protected String infoAboutHowFindInternship = ".";
-    protected String infoAboutWorkExperience = ".";
-    protected String infoAboutOpinionOfInternship = ".";
-    protected String infoAboutIntern = ".";
+    protected String internshipDirection = "-";
+    protected String phoneNumber = "-";
+    protected String tgUrl = "@example";
+    protected String studyDegree = "-";
+    protected String specialization = "-";
+    protected String infoAboutHowFindInternship = "-";
+    protected String infoAboutWorkExperience = "-";
+    protected String infoAboutOpinionOfInternship = "-";
+    protected String infoAboutIntern = "-";
 
     protected Integer idCardKaiten = null;
     protected Long idGetCourse = 0L;

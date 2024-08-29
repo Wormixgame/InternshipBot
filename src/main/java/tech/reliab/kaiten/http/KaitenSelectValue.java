@@ -8,4 +8,5 @@ import lombok.Data;
 public class KaitenSelectValue {
     private Integer id;
     private String value;
+    private String condition;
 }

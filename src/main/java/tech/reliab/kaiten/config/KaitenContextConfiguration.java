@@ -9,12 +9,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.netty.http.client.HttpClient;
 import tech.reliab.kaiten.Entity.Entity;
 import tech.reliab.kaiten.Entity.InternshipEntity;
 import tech.reliab.kaiten.Entity.PracticeEntity;
-import tech.reliab.kaiten.kaiten.KaitenTask;
 
 import java.util.Map;
 
@@ -72,6 +73,7 @@ public class KaitenContextConfiguration {
                         .baseUrl(dbMicroServiceBaseUrl)
                         .defaultHeader("Accept", "application/json")
                         .defaultHeader("Content-Type", "application/json")
+                        .clientConnector(new ReactorClientHttpConnector(HttpClient.newConnection().compress(true)))
                         .build();
     }
 

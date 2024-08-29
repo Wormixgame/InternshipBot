@@ -24,6 +24,7 @@ public class KaitenCardMapper {
     private final KaitenService kaitenService;
     private final Map<Class<? extends Entity>, KaitenConfig.BoardInfo> boardInfos;
     private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat DATE_OF_BIRTH_FORMATTER = new SimpleDateFormat("dd.MM.yyyy");
     private static final Logger log = LoggerFactory.getLogger(KaitenCardMapper.class);
     private static final HashMap<Integer, HashMap<String, Integer>> kaitenIdsOfSelectValues = new HashMap<>();
     private static final HashMap<Integer, HashMap<Integer, String>> kaitenSelectValuesById = new HashMap<>();
@@ -79,7 +80,8 @@ public class KaitenCardMapper {
         }
         return switch (propertyType) {
             case "string", "link", "email" -> propertyValue;
-            case "phone" -> getPhoneNumber((String) propertyValue);
+            case "phone" ->
+                    getPhoneNumber((String) propertyValue);
             case "select" ->
                 // Кайтену нужен массив для Select поля.
                     getIdFromSelectValue(propertyId, (String) propertyValue);
@@ -100,10 +102,11 @@ public class KaitenCardMapper {
 
         return switch (propertyType) {
             case "string", "link", "email" -> propertyValue;
-            case "phone" -> getPhoneNumber((String) propertyValue);
+            case "phone" ->
+                    getPhoneNumber((String) propertyValue);
             case "select" ->
                 // Кайтену нужен массив для Select поля.
-                    getSelectValueFromId(propertyId, ((ArrayList<Integer>)propertyValue).getFirst());
+                    ((ArrayList<Integer>)propertyValue).size() != 0 ?getSelectValueFromId(propertyId, ((ArrayList<Integer>) propertyValue).getFirst()) : null;
             case "date" ->
                 // Кайтену нужен JSON объект с такими полями.
                     getStringDateFromKaitenDate(propertyValue);
@@ -128,33 +131,41 @@ public class KaitenCardMapper {
     }
 
     private synchronized List<Integer> getIdFromSelectValue(Integer propertyId, String selectValue){
+        String originalSelectValue = selectValue;
+        String lowerCaseSelectValue = selectValue.toLowerCase();
+        // Маппинг значения
+        if (KAITEN_CONFIG.selectPropertiesConfig.get(propertyId).getMapping().containsKey(lowerCaseSelectValue)) {
+            originalSelectValue = (KAITEN_CONFIG.selectPropertiesConfig.get(propertyId).getMapping().get(lowerCaseSelectValue));
+            lowerCaseSelectValue = originalSelectValue.toLowerCase();
+        }
+
         // Не добавлены select values для данной property
-        if (!kaitenIdsOfSelectValues.containsKey(propertyId) || !kaitenIdsOfSelectValues.get(propertyId).containsKey(selectValue)){
+        if (!kaitenIdsOfSelectValues.containsKey(propertyId) || !kaitenIdsOfSelectValues.get(propertyId).containsKey(lowerCaseSelectValue)){
             updateSelectValuesByPropertyId(propertyId);
         }
 
-        // Есть нужный select value
-        if (!kaitenIdsOfSelectValues.get(propertyId).containsKey(selectValue)){
+        // Если нет нужного select value
+        if (!kaitenIdsOfSelectValues.get(propertyId).containsKey(lowerCaseSelectValue)){
             if (!KAITEN_CONFIG.selectPropertiesConfig.get(propertyId).getAllowCreation()){
                 return null;
             }
-            createSelectValue(propertyId, selectValue);
+            createSelectValue(propertyId, originalSelectValue);
         }
 
-        if (!kaitenIdsOfSelectValues.get(propertyId).containsKey(selectValue)){
+        if (!kaitenIdsOfSelectValues.get(propertyId).containsKey(lowerCaseSelectValue)){
             return null;
         }
 
         List<Integer> ids = new ArrayList<>();
-        ids.add(kaitenIdsOfSelectValues.get(propertyId).get(selectValue));
+        ids.add(kaitenIdsOfSelectValues.get(propertyId).get(lowerCaseSelectValue));
         return ids;
     }
 
     private synchronized void createSelectValue(Integer propertyId, String selectValue){
         try{
             KaitenSelectValue kaitenSelectValue = kaitenService.updateSelectValues(propertyId, selectValue);
-            kaitenIdsOfSelectValues.get(propertyId).put(kaitenSelectValue.getValue(), kaitenSelectValue.getId());
-            kaitenSelectValuesById.get(propertyId).put(kaitenSelectValue.getId(), kaitenSelectValue.getValue());
+            kaitenIdsOfSelectValues.get(propertyId).put(kaitenSelectValue.getValue().toLowerCase(), kaitenSelectValue.getId());
+            kaitenSelectValuesById.get(propertyId).put(kaitenSelectValue.getId(), kaitenSelectValue.getValue().toLowerCase());
         }catch (HttpClientErrorException ex){
             log.error(ex.getMessage());
         }
@@ -172,8 +183,11 @@ public class KaitenCardMapper {
         List<KaitenSelectValue> selectValuesList = kaitenService.getSelectValues(propertyId);
         Map<String, Integer> selectIds = kaitenIdsOfSelectValues.get(propertyId);
         Map<Integer, String> selectValues = kaitenSelectValuesById.get(propertyId);
-        for (KaitenSelectValue selectValue : selectValuesList){
-            selectIds.put(selectValue.getValue(), selectValue.getId());
+        for (KaitenSelectValue selectValue : selectValuesList.stream().filter(selectValue -> selectValue.getCondition().equals("active")).toList()){
+            selectIds.put(selectValue.getValue().toLowerCase(), selectValue.getId());
+            selectValues.put(selectValue.getId(), selectValue.getValue());
+        }
+        for (KaitenSelectValue selectValue : selectValuesList.stream().filter(selectValue -> !selectValue.getCondition().equals("active")).toList()){
             selectValues.put(selectValue.getId(), selectValue.getValue());
         }
     }
@@ -190,8 +204,18 @@ public class KaitenCardMapper {
         HashMap<String, Object> customProperties = new HashMap<>();
         for (Map.Entry<String, KaitenConfig.CustomProperty> entry: boardInfo.customProperties.entrySet()){
             if(entityProperties.containsKey(entry.getKey())){
-                Object value = getPropertyValueForKaiten(entry.getValue().getId(), entry.getValue().getType(), entityProperties.get(entry.getKey()));
-                customProperties.put("id_" + entry.getValue().getId(), value);
+                if (entry.getKey().equals("dateOfBirth")){
+                    try {
+                        Date dbDate = new Date((Long)entityProperties.get(entry.getKey()));
+                        String kaitenDate = DATE_OF_BIRTH_FORMATTER.format(dbDate);
+                        customProperties.put("id_" + entry.getValue().getId(), kaitenDate);
+                    }catch (ClassCastException ex){
+                        log.warn("Кто придумал использовать строковое поле для записи даты в Кайтене???", ex);
+                    }
+                }else {
+                    Object value = getPropertyValueForKaiten(entry.getValue().getId(), entry.getValue().getType(), entityProperties.get(entry.getKey()));
+                    customProperties.put("id_" + entry.getValue().getId(), value);
+                }
             }
         }
         return customProperties;
@@ -203,9 +227,24 @@ public class KaitenCardMapper {
         for (Map.Entry<String, KaitenConfig.CustomProperty> entry: boardInfo.customProperties.entrySet()){
             KaitenConfig.CustomProperty property =  entry.getValue();
             Object kaitenPropertyValue = card.getProperties().get("id_" + property.getId());
-            Object databasePropertyValue = getPropertyValueForDatabase(property.getId(), property.getType(), kaitenPropertyValue);
-            if(databasePropertyValue != null) {
-                customProperties.put(entry.getKey(), databasePropertyValue);
+            if (entry.getKey().equals("dateOfBirth")){
+                try{
+                    String dbDate;
+                    if (kaitenPropertyValue == null){
+                        dbDate = DATE_FORMATTER.format(new Date());
+                    }else {
+                        Date kaitenDate = DATE_OF_BIRTH_FORMATTER.parse((String) kaitenPropertyValue);
+                        dbDate = DATE_FORMATTER.format(kaitenDate);
+                    }
+                    customProperties.put(entry.getKey(), dbDate);
+                }catch (ParseException ex){
+                    log.warn("Кто придумал использовать строковое поле для записи даты в Кайтене??? Маппинг карточки из Кайтена.", ex);
+                }
+            }else{
+                Object databasePropertyValue = getPropertyValueForDatabase(property.getId(), property.getType(), kaitenPropertyValue);
+                if (databasePropertyValue != null) {
+                    customProperties.put(entry.getKey(), databasePropertyValue);
+                }
             }
         }
         return customProperties;

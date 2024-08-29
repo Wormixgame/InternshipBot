@@ -83,5 +83,17 @@ public class XMLConfigStructure {
         private int id;
         @XmlElement(name = "allow-creation")
         private boolean allowCreation;
+        @XmlElementWrapper(name = "mapping")
+        @XmlElement(name = "map-value")
+        private List<XMLSelectCustomPropertyMapValue> mapValues;
+    }
+
+    @Data
+    @XmlAccessorType(XmlAccessType.FIELD)
+    public static class XMLSelectCustomPropertyMapValue {
+        @XmlElement(name = "site-value")
+        private String siteValue;
+        @XmlElement(name = "kaiten-value")
+        private String kaitenValue;
     }
 }
